@@ -34,3 +34,6 @@ jobs:
         run: |
           echo "Debugging information"
          # Run additional commands for debugging
+
+      - name: Check json-format-cli version
+        run: json-format --version
