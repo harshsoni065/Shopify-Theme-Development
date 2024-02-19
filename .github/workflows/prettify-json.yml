@@ -1,0 +1,31 @@
+name: Prettify JSON
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prettify-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Install jq
+        run: sudo apt-get install jq
+      
+      - name: Find and Prettify JSON files
+        run: |
+          find . -type f -name '*.json' -exec sh -c 'jq . {} > {}.formatted && mv {}.formatted {}' \;
+      
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add *.json
+          git commit -m "Prettify JSON files" || echo "No changes to commit"
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.7.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
