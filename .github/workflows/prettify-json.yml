@@ -28,4 +28,4 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.7.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.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 }}
