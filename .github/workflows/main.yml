@@ -26,7 +26,14 @@ jobs:
 
       - name: Prettify JSON files
         run: |
-          find . -type f -name '*.json' -exec sh -c 'json-format -i "$1" -o "$1.formatted" || echo "Error formatting $1"' _ {} \;
-          find . -type f -name '*.json.formatted' -exec mv {} {} \;
+          find . -type f -name '*.json' -print0 | while IFS= read -r -d '' file; do
+              if [[ $(wc -c <"$file") -gt 0 ]]; then
+                  json-format -i "$file" -o "$file.formatted" || echo "Error formatting $file"
+                  mv "$file.formatted" "$file"
+              else
+                  echo "Skipping empty file: $file"
+              fi
+          done
+
           git add .
           git diff --quiet --exit-code || git commit -m "Prettify JSON files"
