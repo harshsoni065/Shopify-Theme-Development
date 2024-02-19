@@ -17,9 +17,9 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '14' # Use version 14 or higher to meet the requirements of actions/checkout@v4
+          node-version: '20' # Use version 14 or higher to meet the requirements of actions/checkout@v4
 
       - name: Install json-format-cli
         run: npm install -g json-format-cli
