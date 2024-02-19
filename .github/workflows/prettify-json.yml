@@ -17,9 +17,9 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '14' # Use version 14 or higher to meet the requirements of actions/checkout@v4
+          node-version: '20' # Use version 14 or higher to meet the requirements of actions/checkout@v4
 
       - name: Install json-format-cli
         run: npm install -g json-format-cli
@@ -29,11 +29,3 @@ jobs:
           find . -type f -name '*.json' -exec json-format -i {} -o {} \;
           git add .
           git diff --quiet --exit-code || git commit -m "Prettify JSON files"
-
-      - name: Debug Step
-        run: |
-          echo "Debugging information"
-         # Run additional commands for debugging
-
-      - name: Check json-format-cli version
-        run: json-format --version
