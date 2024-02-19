@@ -26,6 +26,7 @@ jobs:
 
       - name: Prettify JSON files
         run: |
-          find . -type f -name '*.json' -exec json-format -i {} -o {} \;
+          find . -type f -name '*.json' -exec sh -c 'json-format -i "$1" -o "$1.formatted" || echo "Error formatting $1"' _ {} \;
+          find . -type f -name '*.json.formatted' -exec mv {} {} \;
           git add .
           git diff --quiet --exit-code || git commit -m "Prettify JSON files"
