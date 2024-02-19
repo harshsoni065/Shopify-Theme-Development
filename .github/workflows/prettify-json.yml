@@ -29,3 +29,8 @@ jobs:
           find . -type f -name '*.json' -exec json-format -i {} -o {} \;
           git add .
           git diff --quiet --exit-code || git commit -m "Prettify JSON files"
+
+      - name: Debug Step
+        run: |
+          echo "Debugging information"
+         # Run additional commands for debugging
