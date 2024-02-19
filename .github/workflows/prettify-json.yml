@@ -1,7 +1,6 @@
-name: Continuous Integration
+name: Prettify JSON Files
 
 on:
-  pull_request:
   push:
     branches:
       - main
@@ -12,20 +11,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Use version 14 or higher to meet the requirements of actions/checkout@v4
+          node-version: '16'
 
       - name: Install json-format-cli
         run: npm install -g json-format-cli
 
       - name: Prettify JSON files
         run: |
-          find . -type f -name '*.json' -exec json-format -i {} -o {} \;
+          find . -type f -name '*.json' -exec sh -c 'json-format -i "$1" -o "$1.formatted" || echo "Error formatting $1"' _ {} \;
+          find . -type f -name '*.json.formatted' -exec mv {} {} \;
           git add .
           git diff --quiet --exit-code || git commit -m "Prettify JSON files"
