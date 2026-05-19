@@ -214,6 +214,7 @@
     },
     "17791813893de4fc37": {
       "type": "_blocks",
+      "disabled": true,
       "settings": {}
     },
     "1779182301ab1b9904": {
@@ -309,6 +310,7 @@
       "block_order": [
         "ai_gen_block_69ecd6b_wDtCnw"
       ],
+      "disabled": true,
       "settings": {}
     }
   },
