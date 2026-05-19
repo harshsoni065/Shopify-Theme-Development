@@ -135,6 +135,7 @@
         "timeline_entry_YATqLj": {
           "type": "timeline_entry",
           "settings": {
+            "image": "shopify://shop_images/Main_9129b69a-0c7b-4f66-b6cf-c4222f18028a.jpg",
             "period": "Birth – first weeks",
             "happening_label": "What's happening in the skin",
             "happening_text": "Skin barrier is immature; pH is higher than adult skin; microbiome begins colonizing.",
@@ -147,6 +148,7 @@
         "timeline_entry_aHNVhh": {
           "type": "timeline_entry",
           "settings": {
+            "image": "shopify://shop_images/Main_b9e0da7f-db89-4d41-83f0-7f417b02831d.jpg",
             "period": "0–12 months",
             "happening_label": "What's happening in the skin",
             "happening_text": "Barrier function improves; microbiome diversifies with environment and feeding.",
@@ -159,6 +161,7 @@
         "timeline_entry_dBNJDn": {
           "type": "timeline_entry",
           "settings": {
+            "image": "shopify://shop_images/Main_b13ad453-477c-4ed1-9b43-81f3345adfd6.jpg",
             "period": "1–3 years",
             "happening_label": "What's happening in the skin",
             "happening_text": "Barrier approaches adult-like function; immune tolerance develops.",
@@ -183,6 +186,7 @@
       ],
       "name": "Guide article",
       "settings": {
+        "hero_image": "shopify://shop_images/theme_cover_image.jpg",
         "overlay_opacity": 35,
         "badge_number": "4",
         "hero_title": "First three years",
