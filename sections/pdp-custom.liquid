@@ -1,0 +1,728 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign featured_media = current_variant.featured_media | default: product.featured_media %}
+{% assign pdp_form_id = 'pdp-custom-form-' | append: section.id %}
+{% assign related_collection = section.settings.related_collection | default: product.collections.first %}
+
+<section class="pdp-custom section-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="pdp-custom__wrap page-width">
+    <div class="pdp-custom__grid">
+      <div class="pdp-custom__media">
+        <div class="pdp-custom__main-media">
+          {% if featured_media %}
+            {{
+              featured_media
+              | image_url: width: 1200
+              | image_tag:
+                class: 'pdp-custom__main-image',
+                loading: 'eager',
+                widths: '480, 720, 960, 1200',
+                sizes: '(max-width: 989px) 100vw, 56vw'
+            }}
+          {% endif %}
+        </div>
+
+        {% if product.media.size > 1 %}
+          <div class="pdp-custom__thumbs">
+            {% for media in product.media %}
+              <button
+                type="button"
+                class="pdp-custom__thumb{% if media.id == featured_media.id %} is-active{% endif %}"
+                data-media-url="{{ media | image_url: width: 1200 }}"
+                aria-label="Show image {{ forloop.index }}"
+              >
+                {{
+                  media
+                  | image_url: width: 220
+                  | image_tag: class: 'pdp-custom__thumb-image', loading: 'lazy', widths: '80, 120, 160, 220'
+                }}
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="pdp-custom__content">
+        <div class="pdp-custom__card">
+          <p class="pdp-custom__vendor">{{ product.vendor }}</p>
+          <h1 class="pdp-custom__title">{{ product.title }}</h1>
+
+          <div class="pdp-custom__price-wrap">
+            <span class="pdp-custom__price">{{ current_variant.price | money }}</span>
+            {% if current_variant.compare_at_price > current_variant.price %}
+              <span class="pdp-custom__compare">{{ current_variant.compare_at_price | money }}</span>
+            {% endif %}
+          </div>
+
+          {% form 'product', product, class: 'pdp-custom__form', id: pdp_form_id %}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
+
+            {% for option in product.options_with_values %}
+              <fieldset class="pdp-custom__option">
+                <legend class="pdp-custom__option-label">{{ option.name }}</legend>
+                <div class="pdp-custom__pills">
+                  {% for value in option.values %}
+                    <label class="pdp-custom__pill-wrap">
+                      <input
+                        type="radio"
+                        name="options[{{ option.name | escape }}]"
+                        value="{{ value | escape }}"
+                        {% if option.selected_value == value %}
+                          checked
+                        {% endif %}
+                        data-option-input
+                      >
+                      <span class="pdp-custom__pill">{{ value }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </fieldset>
+            {% endfor %}
+
+            <div class="pdp-custom__qty-row">
+              <button type="button" class="pdp-custom__qty-btn" data-qty-minus aria-label="Decrease quantity">-</button>
+              <input class="pdp-custom__qty-input" type="number" name="quantity" value="1" min="1" data-qty-input>
+              <button type="button" class="pdp-custom__qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+            </div>
+
+            <button type="submit" class="pdp-custom__add" {% unless current_variant.available %}disabled{% endunless %}>
+              {% if current_variant.available %}{{ section.settings.atc_label }}{% else %}{{ section.settings.sold_out_label }}{% endif %}
+            </button>
+          {% endform %}
+
+          {% if section.blocks.size > 0 %}
+            <div class="pdp-custom__badges">
+              {% for block in section.blocks %}
+                {% if block.type == 'info_badge' %}
+                  <div class="pdp-custom__badge" {{ block.shopify_attributes }}>
+                    <span class="pdp-custom__badge-dot"></span>
+                    <span>{{ block.settings.text }}</span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if product.description != blank %}
+            <details class="pdp-custom__accordion" open>
+              <summary>{{ section.settings.details_title }}</summary>
+              <div class="pdp-custom__desc rte">{{ product.description }}</div>
+            </details>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if related_collection != blank %}
+      <div class="pdp-custom__related">
+        <div class="pdp-custom__section-head">
+          <h2>{{ section.settings.related_title }}</h2>
+        </div>
+        <div class="pdp-custom__related-grid">
+          {% assign related_count = 0 %}
+          {% for related_product in related_collection.products %}
+            {% if related_product.id != product.id and related_count < section.settings.related_limit %}
+              <a class="pdp-custom__related-card" href="{{ related_product.url }}">
+                {% if related_product.featured_image %}
+                  {{
+                    related_product.featured_image
+                    | image_url: width: 500
+                    | image_tag:
+                      class: 'pdp-custom__related-img',
+                      loading: 'lazy',
+                      widths: '160, 260, 360, 500',
+                      sizes: '(max-width: 749px) 45vw, 18vw'
+                  }}
+                {% endif %}
+                <div class="pdp-custom__related-body">
+                  <p class="pdp-custom__related-vendor">{{ related_product.vendor }}</p>
+                  <h3>{{ related_product.title }}</h3>
+                  <p class="pdp-custom__related-price">{{ related_product.price | money }}</p>
+                </div>
+              </a>
+              {% assign related_count = related_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="pdp-custom__reviews">
+      <div class="pdp-custom__section-head">
+        <h2>{{ section.settings.reviews_title }}</h2>
+      </div>
+      <div class="pdp-custom__review-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'review_item' %}
+            <article class="pdp-custom__review" {{ block.shopify_attributes }}>
+              <div class="pdp-custom__review-top">
+                <strong>{{ block.settings.author }}</strong>
+                <span>{{ block.settings.date }}</span>
+              </div>
+              <div class="pdp-custom__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                {% for i in (1..5) %}
+                  <span class="{% if i <= block.settings.rating %}is-on{% endif %}">★</span>
+                {% endfor %}
+              </div>
+              <p>{{ block.settings.content }}</p>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-variants-json>
+    {{ product.variants | json }}
+  </script>
+</section>
+
+<script>
+  (() => {
+    const root = document.querySelector('.pdp-custom.section-{{ section.id }}');
+    if (!root) return;
+
+    const mainImage = root.querySelector('.pdp-custom__main-image');
+    const thumbButtons = [...root.querySelectorAll('.pdp-custom__thumb')];
+    const optionInputs = [...root.querySelectorAll('[data-option-input]')];
+    const variantIdInput = root.querySelector('[data-variant-id-input]');
+    const priceNode = root.querySelector('.pdp-custom__price');
+    const compareNode = root.querySelector('.pdp-custom__compare');
+    const addButton = root.querySelector('.pdp-custom__add');
+    const qtyInput = root.querySelector('[data-qty-input]');
+    const minusBtn = root.querySelector('[data-qty-minus]');
+    const plusBtn = root.querySelector('[data-qty-plus]');
+    const variantsJson = root.querySelector('[data-variants-json]');
+    if (!variantsJson) return;
+
+    const variants = JSON.parse(variantsJson.textContent || '[]');
+    const moneyFormat = {{ shop.money_format | json }};
+    const addToCartLabel = {{ section.settings.atc_label | json }};
+    const soldOutLabel = {{ section.settings.sold_out_label | json }};
+    const formatMoney = (cents) => {
+      const amount = (cents / 100).toFixed(2);
+      return moneyFormat.replace('{{amount}}', amount).replace('{{ amount }}', amount);
+    };
+
+    const setActiveThumbByUrl = (url) => {
+      thumbButtons.forEach((btn) => btn.classList.toggle('is-active', btn.dataset.mediaUrl === url));
+    };
+
+    thumbButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const imageUrl = btn.dataset.mediaUrl;
+        if (!imageUrl || !mainImage) return;
+        mainImage.src = imageUrl;
+        setActiveThumbByUrl(imageUrl);
+      });
+    });
+
+    const getSelectedOptions = () => {
+      const groups = {};
+      optionInputs.forEach((input) => {
+        if (input.checked) groups[input.name] = input.value;
+      });
+      return Object.values(groups);
+    };
+
+    const syncVariant = () => {
+      const selectedValues = getSelectedOptions();
+      const match = variants.find((variant) => variant.options && variant.options.every((option, index) => option === selectedValues[index]));
+      if (!match) return;
+
+      if (variantIdInput) variantIdInput.value = match.id;
+      if (priceNode) priceNode.textContent = formatMoney(match.price);
+
+      if (compareNode) {
+        if (match.compare_at_price && match.compare_at_price > match.price) {
+          compareNode.textContent = formatMoney(match.compare_at_price);
+          compareNode.style.display = '';
+        } else {
+          compareNode.style.display = 'none';
+        }
+      }
+
+      if (addButton) {
+        addButton.disabled = !match.available;
+        addButton.textContent = match.available ? addToCartLabel : soldOutLabel;
+      }
+
+      if (mainImage && match.featured_image && match.featured_image.src) {
+        mainImage.src = match.featured_image.src;
+        setActiveThumbByUrl(match.featured_image.src);
+      }
+    };
+
+    optionInputs.forEach((input) => input.addEventListener('change', syncVariant));
+
+    if (minusBtn && qtyInput) {
+      minusBtn.addEventListener('click', () => {
+        const current = Number.parseInt(qtyInput.value || '1', 10);
+        qtyInput.value = Math.max(1, current - 1);
+      });
+    }
+    if (plusBtn && qtyInput) {
+      plusBtn.addEventListener('click', () => {
+        const current = Number.parseInt(qtyInput.value || '1', 10);
+        qtyInput.value = Math.max(1, current + 1);
+      });
+    }
+  })();
+</script>
+
+{% style %}
+  .pdp-custom {
+    --pdp-border: #e8dfd6;
+    --pdp-bg: #f8f4ee;
+    --pdp-accent: #e57d6f;
+    --pdp-text: #181818;
+    --pdp-muted: #777066;
+    background: #fff;
+    padding: 1.8rem 0 3rem;
+  }
+
+  .pdp-custom__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 2.4rem;
+    align-items: start;
+    margin-bottom: 2rem;
+  }
+
+  .pdp-custom__main-media {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .pdp-custom__main-image,
+  .pdp-custom__thumb-image,
+  .pdp-custom__related-img {
+    width: 100%;
+    display: block;
+    height: auto;
+  }
+
+  .pdp-custom__thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 10px;
+  }
+
+  .pdp-custom__thumb {
+    border: 1px solid var(--pdp-border);
+    border-radius: 6px;
+    background: #fff;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .pdp-custom__thumb.is-active {
+    border-color: #292929;
+  }
+
+  .pdp-custom__card {
+    background: var(--pdp-bg);
+    border: 1px solid var(--pdp-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .pdp-custom__vendor {
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    font-size: 11px;
+    color: #7f776d;
+  }
+
+  .pdp-custom__title {
+    margin: 0 0 9px;
+    color: var(--pdp-text);
+    font-size: 30px;
+    line-height: 1.15;
+  }
+
+  .pdp-custom__price-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .pdp-custom__price {
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .pdp-custom__compare {
+    color: #8f8f8f;
+    text-decoration: line-through;
+  }
+
+  .pdp-custom__option {
+    border: 0;
+    padding: 0;
+    margin: 0 0 10px;
+  }
+
+  .pdp-custom__option-label {
+    margin: 0 0 6px;
+    font-size: 12px;
+    color: #615c55;
+  }
+
+  .pdp-custom__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pdp-custom__pill-wrap input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pdp-custom__pill {
+    border: 1px solid #d8cec4;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .pdp-custom__pill-wrap input:checked + .pdp-custom__pill {
+    border-color: #202020;
+    background: #202020;
+    color: #fff;
+  }
+
+  .pdp-custom__qty-row {
+    display: inline-flex;
+    border: 1px solid #d9cfc5;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .pdp-custom__qty-btn,
+  .pdp-custom__qty-input {
+    height: 38px;
+    border: 0;
+    background: #fff;
+    text-align: center;
+  }
+
+  .pdp-custom__qty-btn {
+    width: 38px;
+    font-size: 17px;
+    cursor: pointer;
+  }
+
+  .pdp-custom__qty-input {
+    width: 50px;
+    border-left: 1px solid #d9cfc5;
+    border-right: 1px solid #d9cfc5;
+    font-size: 14px;
+  }
+
+  .pdp-custom__add {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 999px;
+    background: var(--pdp-accent);
+    color: #fff;
+    min-height: 49px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  .pdp-custom__badges {
+    display: grid;
+    gap: 7px;
+    margin: 0 0 12px;
+  }
+
+  .pdp-custom__badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #4f4a44;
+  }
+
+  .pdp-custom__badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #5cb26f;
+    flex-shrink: 0;
+  }
+
+  .pdp-custom__accordion {
+    border-top: 1px solid var(--pdp-border);
+    padding-top: 10px;
+  }
+
+  .pdp-custom__accordion summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .pdp-custom__desc {
+    margin-top: 10px;
+    color: #4f4a44;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .pdp-custom__section-head h2 {
+    margin: 0 0 1.2rem;
+    font-size: 1.9rem;
+    letter-spacing: 0.01em;
+  }
+
+  .pdp-custom__related {
+    margin: 1.2rem 0 2rem;
+  }
+
+  .pdp-custom__related-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .pdp-custom__related-card {
+    border: 1px solid var(--pdp-border);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+  }
+
+  .pdp-custom__related-body {
+    padding: 10px;
+  }
+
+  .pdp-custom__related-vendor {
+    margin: 0 0 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--pdp-muted);
+  }
+
+  .pdp-custom__related-body h3 {
+    margin: 0 0 4px;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .pdp-custom__related-price {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .pdp-custom__reviews {
+    border-top: 1px solid var(--pdp-border);
+    padding-top: 1.6rem;
+  }
+
+  .pdp-custom__review-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .pdp-custom__review {
+    border: 1px solid var(--pdp-border);
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+  }
+
+  .pdp-custom__review-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .pdp-custom__stars {
+    color: #cbc7c2;
+    margin-bottom: 8px;
+  }
+
+  .pdp-custom__stars .is-on {
+    color: #f3b343;
+  }
+
+  .pdp-custom__review p {
+    margin: 0;
+    font-size: 13px;
+    color: #4d4943;
+    line-height: 1.55;
+  }
+
+  @media screen and (max-width: 989px) {
+    .pdp-custom__grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .pdp-custom__related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .pdp-custom {
+      padding-top: 1rem;
+    }
+
+    .pdp-custom__card {
+      padding: 14px;
+    }
+
+    .pdp-custom__title {
+      font-size: 24px;
+    }
+
+    .pdp-custom__price {
+      font-size: 22px;
+    }
+
+    .pdp-custom__related-grid {
+      gap: 10px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Custom PDP",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "atc_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out label",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "details_title",
+      "label": "Product details title",
+      "default": "Product details"
+    },
+    {
+      "type": "text",
+      "id": "related_title",
+      "label": "Related section title",
+      "default": "Related Products"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection",
+      "label": "Related collection"
+    },
+    {
+      "type": "range",
+      "id": "related_limit",
+      "label": "Related products count",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "reviews_title",
+      "label": "Reviews section title",
+      "default": "Customers Reviews"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info_badge",
+      "name": "Info badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Natural ingredients and skin-safe formula"
+        }
+      ]
+    },
+    {
+      "type": "review_item",
+      "name": "Review item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Customer Name"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "2 months ago"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Review content",
+          "default": "Amazing product quality and packaging. The fragrance lasts long and feels premium."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom PDP",
+      "blocks": [
+        {
+          "type": "info_badge"
+        },
+        {
+          "type": "info_badge"
+        },
+        {
+          "type": "review_item"
+        },
+        {
+          "type": "review_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
