@@ -1,0 +1,491 @@
+<section id="hub-{{ section.id }}" class="hub">
+  {% assign sidebar_stats = '' %}
+
+{% for block in section.blocks %}
+  {% if block.type == 'stats' %}
+    {% capture sidebar_stats %}
+      <div class="hub__stats-column">
+        {% for i in (1..3) %}
+          {% assign p = 'percent_' | append: i %}
+          {% assign t = 'text_' | append: i %}
+          {% if block.settings[p] != blank %}
+            <div class="hub__stat-item">
+              <div class="hub__stat-value">{{ block.settings[p] }}</div>
+              <div class="hub__stat-text">{{ block.settings[t] }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endcapture %}
+  {% endif %}
+{% endfor %}
+
+  <div class="hub__inner">
+
+    <!-- Sidebar -->
+    <aside class="hub__sidebar">
+  <ol class="hub__nav">
+    {% for block in section.blocks %}
+      {% if block.type == 'nav' %}
+        <li>
+          <a 
+            href="#{{ block.settings.anchor }}"
+            class="{% if block.settings.highlight %}is-active{% endif %}">
+            {{ block.settings.label }}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+
+  {{ sidebar_stats }}
+
+  <button class="hub__top" data-top>↑ Back to top</button>
+</aside>
+
+
+
+    <!-- Content -->
+    <div class="hub__content">
+
+      {% for block in section.blocks %}
+      {% case block.type %}
+       {% when 'care_step' %}
+
+<div class="hub-care-step {% cycle 'left','right' %}">
+  
+  <div class="hub-care-step__image">
+    {% if block.settings.image %}
+      {{ block.settings.image | image_url: width: 600 | image_tag }}
+    {% endif %}
+  </div>
+
+  <div class="hub-care-step__content">
+    <h3>{{ block.settings.title }}</h3>
+    <div class="rte">{{ block.settings.text }}</div>
+  </div>
+
+</div>
+<hr class="hub-care-divider">
+ 
+      {% when 'hero' %}
+        <div id="{{ block.settings.anchor }}" class="hub__hero">
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 1600 | image_tag }}
+          {% endif %}
+          <div class="hub__hero-text">
+            <span class="hub__hero-number">{{ block.settings.number }}</span>
+            <h2>{{ block.settings.title }}</h2>
+          </div>
+        </div>
+
+      {% when 'heading' %}
+        <h2 id="{{ block.settings.anchor }}" class="hub__heading">{{ block.settings.title }}</h2>
+
+      {% when 'text' %}
+        <div class="hub__text rte">{{ block.settings.text }}</div>
+
+      {% when 'bullets' %}
+        <ul class="hub__bullets">
+          {% assign items = block.settings.items | newline_to_br | split: '<br />' %}
+          {% for i in items %}<li>{{ i }}</li>{% endfor %}
+        </ul>
+
+      {% when 'image_text' %}
+        <div class="hub__imgtxt {% if block.settings.reverse %}is-reverse{% endif %}">
+          <div>{{ block.settings.image | image_url: width: 900 | image_tag }}</div>
+          <div class="rte">{{ block.settings.text }}</div>
+        </div>
+
+      {% when 'dual_images' %}
+        <div class="hub__dual">
+          <figure>{{ block.settings.image1 | image_url: width: 700 | image_tag }}<figcaption>{{ block.settings.caption1 }}</figcaption></figure>
+          <figure>{{ block.settings.image2 | image_url: width: 700 | image_tag }}<figcaption>{{ block.settings.caption2 }}</figcaption></figure>
+        </div>
+
+      {% when 'table' %}
+        <div class="hub__table rte">{{ block.settings.table_html }}</div>
+
+      {% when 'timeline_steps' %}
+</div></div> <!-- CLOSE content & inner grid -->
+
+<div class="hub-timeline-row">
+
+  <div class="hub-timeline-container">
+
+  <!-- LEFT HIGHLIGHT PANEL -->
+  <aside class="hub-timeline-highlight">
+    <div class="hub__highlight">
+      <div class="hub__highlight-text rte">{{ block.settings.highlight_text }}</div>
+
+      {% if block.settings.highlight_author != blank %}
+      <div class="hub__highlight-author">
+        <strong>{{ block.settings.highlight_author }}</strong>
+        <span>{{ block.settings.highlight_author_sub }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </aside>
+</div>
+  <div class="hub__inner"><div class="hub__content">
+
+  <!-- RIGHT TIMELINE -->
+  <div class="hub-timeline-advanced">
+
+    <h2 class="hub-timeline-advanced__title">{{ block.settings.title }}</h2>
+    <div class="hub-timeline-advanced__line"></div>
+
+    {% for i in (1..3) %}
+      {% assign img = 'img_' | append: i %}
+      {% assign head = 'head_' | append: i %}
+      {% assign a = 'text_' | append: i | append: 'a' %}
+      {% assign b = 'text_' | append: i | append: 'b' %}
+      {% assign c = 'text_' | append: i | append: 'c' %}
+
+      {% if block.settings[head] != blank %}
+      <div class="hub-timeline-step">
+
+        <div class="hub-timeline-step__marker">
+          {% if block.settings[img] %}
+            {{ block.settings[img] | image_url: width: 120 | image_tag }}
+          {% endif %}
+        </div>
+
+        <div class="hub-timeline-step__content">
+          <h4>{{ block.settings[head] }}</h4>
+          <div class="hub-timeline-step__text">
+            {{ block.settings[a] }}
+            {{ block.settings[b] }}
+            {{ block.settings[c] }}
+          </div>
+        </div>
+
+      </div>
+      {% endif %}
+    {% endfor %}
+
+  </div>
+
+</div>
+
+
+
+      {% when 'quote' %}
+        <blockquote class="hub__quote">{{ block.settings.quote }}</blockquote>
+
+      {% endcase %}
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* ===== ROOT ===== */
+#hub-{{ section.id }}{padding:clamp(30px,4vw,60px) clamp(16px,4vw,24px);background:{{ section.settings.bg }}}
+
+/* ===== MAIN LAYOUT ===== */
+.hub__inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+.hub__sidebar{position:sticky;top:80px;height:max-content}
+.hub__top{margin-top:16px;background:#e6eef7;border:0;padding:8px 12px;border-radius:16px;cursor:pointer}
+
+/* ===== SIDEBAR ===== */
+.hub__nav{list-style:decimal;padding-left:18px}
+{% comment %} .hub__nav a{display:block;padding:6px 0;color:#777;text-decoration:none;font-size:clamp(14px,1.2vw,16px)} {% endcomment %}
+
+/* default */
+.hub__nav a{
+  color:#9aa0a6;
+  text-decoration:none;
+  transition:.25s;
+}
+
+/* highlighted item */
+.hub__nav a.is-active{
+  color:#111;
+  font-weight:600;
+}
+
+/* numbers */
+.hub__nav li::marker{
+  color:#c5c9ce;
+  font-weight:500;
+}
+
+.hub__nav a.is-active::marker{
+  color:#111;
+  font-weight:700;
+}
+
+
+
+/* ===== HERO ===== */
+.hub__hero{position:relative;margin-bottom:22px}
+.hub__hero img{width:100%;border-radius:14px}
+.hub__hero-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#fff;padding:20px}
+.hub__hero-number{border:2px solid #fff;border-radius:50%;padding:10px 16px;margin-bottom:10px}
+
+/* ===== TEXT ===== */
+.hub__heading{margin:28px 0 12px;font-size:clamp(22px,2.2vw,30px)}
+.hub__text{margin-bottom:16px;color:#444;font-size:clamp(14px,1.3vw,16px);line-height:1.6}
+.hub__bullets{padding-left:20px;margin:12px 0}
+
+/* ===== STATS ===== */
+.hub__stats-column{margin-top:28px;display:grid;gap:24px}
+.hub__stat-item{margin:0}
+.hub__stat-value{font-size:clamp(28px,4vw,56px);color:#8bb3d9;font-weight:300}
+.hub__stat-text{font-size:13px;color:#6b7c93}
+
+/* ===== IMAGE + TEXT ===== */
+.hub__imgtxt{display:flex;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,24px);align-items:center}
+.hub__imgtxt img{width:100%;border-radius:12px}
+.hub__imgtxt.is-reverse{direction:rtl}
+.hub__imgtxt.is-reverse>*{direction:ltr}
+
+/* ===== DUAL IMAGES ===== */
+.hub__dual{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.hub__dual img{width:100%;height:auto;border-radius:12px}
+
+/* ===== TABLE ===== */
+.hub__table{overflow-x:auto}
+.hub__table table{width:100%;border-collapse:collapse;min-width:600px}
+.hub__table td,.hub__table th{border:1px solid #ddd;padding:10px}
+
+/* ===== CARE STEPS ===== */
+.hub-care-step{max-width:1200px;margin:auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+.hub-care-step.right{grid-template-columns:1fr 320px}
+.hub-care-step.right .hub-care-step__image{order:2}
+.hub-care-step.right .hub-care-step__content{order:1}
+.hub-care-step__image img{width:100%;height:auto;border-radius:14px}
+.hub-care-divider{border:none;border-top:1px solid #e2e2e2;margin:30px 0}
+
+/* ===== TIMELINE LAYOUT ===== */
+.hub-timeline-row{max-width:1200px;margin:40px auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+.hub-timeline-highlight{position:sticky;top:100px;height:max-content}
+
+/* timeline card */
+.hub-timeline-advanced{background:#f3f3f3;border-radius:22px;padding:clamp(20px,3vw,40px);position:relative;width: 900px;right: 21rem;bottom: 10px;}
+.hub-timeline-advanced__title{font-size:clamp(18px,2vw,24px);margin-bottom:30px}
+
+/* vertical line perfectly centered to markers */
+.hub-timeline-advanced__line{position:absolute;left: 84px;top: 10rem;bottom:35px;width:2px;background:#cfcfcf;transform:translateX(-50%);}
+
+/* start spacing (from first image center) */
+.hub-timeline-advanced__line::before{content:"";position:absolute;top:32px;left:0;right:0;height:calc(100% - 64px);background:#cfcfcf;}
+
+/* bottom dot */
+.hub-timeline-advanced__line::after{content:"";position:absolute;bottom:0;left:50%;transform:translate(-50%,50%);width:8px;height:8px;border-radius:50%;background:#bdbdbd;}
+.hub-timeline-step{position:relative;}
+.hub-timeline-step__marker{display:flex;align-items:flex-start;justify-content:center;position:relative;}
+.hub-timeline-step__marker img{width:64px;height:64px;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 0 0 2px #cfcfcf;position:relative;z-index:2;}
+
+/* steps */
+.hub-timeline-step{display:grid;grid-template-columns:90px 1fr;gap:18px;margin-bottom:48px}
+.hub-timeline-step__marker img{width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #cfcfcf;background:#fff}
+.hub-timeline-step__content h4{font-size:16px;margin-bottom:10px}
+.hub-timeline-step__text p{margin:0 0 12px;color:#555;line-height:1.6}
+
+/* ===== QUOTE ===== */
+.hub__highlight{padding:22px;border-radius:16px;line-height:1.7;position:relative}
+.hub__highlight::before{content:"“";position:absolute;top:10px;left:14px;font-size:42px;color:#c9dcee}
+.hub__highlight::after{content:"”";position:absolute;bottom:10px;left:34px;font-size:26px;color:#d7e6f4}
+.hub__highlight-author{margin-top:18px;color:#333}
+.hub__highlight-text.rte {margin: 10px;color: #8DADD1;}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablet */
+@media(max-width:1024px){
+.hub__inner{grid-template-columns:220px 1fr}
+.hub-timeline-row{grid-template-columns:220px 1fr}
+.hub-care-step{grid-template-columns:260px 1fr}
+.hub-care-step.right{grid-template-columns:1fr 260px}
+}
+
+/* Mobile */
+@media(max-width:900px){
+.hub__inner{grid-template-columns:1fr}
+.hub__sidebar{position:relative;top:auto}
+.hub-timeline-row{grid-template-columns:1fr}
+.hub-timeline-highlight{position:relative}
+.hub__imgtxt,.hub__dual{grid-template-columns:1fr}
+.hub-care-step,.hub-care-step.right{grid-template-columns:1fr}
+.hub-timeline-advanced__line{left:48px;bottom: 35px}
+.hub-timeline-step{grid-template-columns:60px 1fr}
+.hub-timeline-step__marker img{width:50px;height:50px}
+.hub-timeline-advanced{background:#f3f3f3;border-radius:22px;padding:clamp(20px,3vw,40px);position:relative;width: 100%;right: 0;bottom: 0;margin: 0;}
+.hub-care-step__content {padding-bottom: 20px;}
+.hub__nav {padding:0}
+ .hub-care-step {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hub-care-step__image {
+    order: 1 !important;
+  }
+
+  .hub-care-step__content {
+    order: 2 !important;
+  }
+}
+
+/* Small Mobile */
+@media(max-width:480px){
+.hub__nav a{font-size:14px}
+.hub__stat-value{font-size:24px}
+.hub-timeline-advanced{padding:20px 16px}
+}
+
+
+</style>
+
+<script>
+(function(){const r=document.querySelector('#hub-{{ section.id }}');if(!r)return;r.querySelector('[data-top]').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});})();
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const sections = document.querySelectorAll(".hub__content [id]");
+  const navLinks = document.querySelectorAll(".hub__nav a");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+
+        const id = entry.target.getAttribute("id");
+
+        navLinks.forEach(link => {
+          link.classList.remove("is-active");
+
+          if(link.getAttribute("href") === "#" + id){
+            link.classList.add("is-active");
+          }
+        });
+
+      }
+    });
+  }, {
+    rootMargin: "-40% 0px -55% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+
+
+
+{% schema %}
+{
+  "name": "Advanced Knowledge Hub",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f4f4f4" }
+  ],
+  "blocks": [
+    { "type": "nav", "name": "Sidebar item", "settings": [
+      { "type": "text", "id": "label", "label": "Label" },
+      { "type": "text", "id": "anchor", "label": "Anchor" },
+      {
+      "type": "checkbox",
+      "id": "highlight",
+      "label": "Highlight this item",
+      "default": false
+    }
+    ]},
+
+    { "type": "hero", "name": "Hero", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "number", "label": "Number" },
+      { "type": "text", "id": "title", "label": "Title" },
+      { "type": "text", "id": "anchor", "label": "Anchor" }
+    ]},
+
+    { "type": "heading", "name": "Heading", "settings": [
+      { "type": "text", "id": "title", "label": "Title" },
+      { "type": "text", "id": "anchor", "label": "Anchor" }
+    ]},
+
+    { "type": "text", "name": "Text", "settings": [
+      { "type": "richtext", "id": "text", "label": "Text" }
+    ]},
+
+    { "type": "bullets", "name": "Bullets", "settings": [
+      { "type": "textarea", "id": "items", "label": "Items" }
+    ]},
+
+    { "type": "stats", "name": "Stats", "settings": [
+      { "type": "text", "id": "percent_1", "label": "Percent 1" },
+      { "type": "text", "id": "text_1", "label": "Text 1" },
+      { "type": "text", "id": "percent_2", "label": "Percent 2" },
+      { "type": "text", "id": "text_2", "label": "Text 2" },
+      { "type": "text", "id": "percent_3", "label": "Percent 3" },
+      { "type": "text", "id": "text_3", "label": "Text 3" }
+    ]},
+
+    { "type": "image_text", "name": "Image + Text", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "richtext", "id": "text", "label": "Text" },
+      { "type": "checkbox", "id": "reverse", "label": "Reverse" }
+    ]},
+
+    { "type": "dual_images", "name": "Dual images", "settings": [
+      { "type": "image_picker", "id": "image1", "label": "Image 1" },
+      { "type": "text", "id": "caption1", "label": "Caption 1" },
+      { "type": "image_picker", "id": "image2", "label": "Image 2" },
+      { "type": "text", "id": "caption2", "label": "Caption 2" }
+    ]},
+
+    { "type": "table", "name": "Table", "settings": [
+      { "type": "html", "id": "table_html", "label": "Paste table HTML" }
+    ]},
+
+    { "type": "quote", "name": "Quote", "settings": [
+      { "type": "richtext", "id": "quote", "label": "Quote" }
+    ]},
+        {
+      "type": "care_step",
+      "name": "Care Step Row",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "image_picker", "id": "image", "label": "Image" }
+      ]
+    },
+    {
+      "type": "timeline_steps",
+      "name": "Timeline Detailed",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Section Title" },
+
+        { "type": "richtext", "id": "highlight_text", "label": "Highlight Text" },
+        { "type": "text", "id": "highlight_author", "label": "Author" },
+        { "type": "text", "id": "highlight_author_sub", "label": "Author Subtitle" },
+
+        { "type": "image_picker", "id": "img_1", "label": "Step 1 Image" },
+        { "type": "text", "id": "head_1", "label": "Step 1 Heading" },
+        { "type": "richtext", "id": "text_1a", "label": "Step 1 Whats happening" },
+        { "type": "richtext", "id": "text_1b", "label": "Step 1 Why vulnerable" },
+        { "type": "richtext", "id": "text_1c", "label": "Step 1 Support" },
+
+        { "type": "image_picker", "id": "img_2", "label": "Step 2 Image" },
+        { "type": "text", "id": "head_2", "label": "Step 2 Heading" },
+        { "type": "richtext", "id": "text_2a", "label": "Step 2 Whats happening" },
+        { "type": "richtext", "id": "text_2b", "label": "Step 2 Why vulnerable" },
+        { "type": "richtext", "id": "text_2c", "label": "Step 2 Support" },
+
+        { "type": "image_picker", "id": "img_3", "label": "Step 3 Image" },
+        { "type": "text", "id": "head_3", "label": "Step 3 Heading" },
+        { "type": "richtext", "id": "text_3a", "label": "Step 3 Whats happening" },
+        { "type": "richtext", "id": "text_3b", "label": "Step 3 Why vulnerable" },
+        { "type": "richtext", "id": "text_3c", "label": "Step 3 Support" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Advanced Knowledge Hub" }
+  ]
+}
+
+{% endschema %}
