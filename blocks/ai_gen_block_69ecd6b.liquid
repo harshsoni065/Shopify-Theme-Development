@@ -1,0 +1,1088 @@
+{% doc %}
+  @prompt
+    Create a new Shopify theme section that matches this layout:
+    
+    1. **Hero Banner** at the top with:
+       - A background image
+       - A circular numbered badge/icon in the center
+       - A bold heading (e.g. "First three years")
+       - A subtitle/description text below the heading
+    
+    2. **Two-column content area** below the hero:
+       - Left column: A sidebar with a text block and an author/name attribution
+       - Right column: Rich text content with a main heading and multiple sub-sections each with a bold subheading and paragraph body text
+    
+    3. **Timeline section** with:
+       - A section heading (e.g. "Microbiome & Skin Development Timeline")
+       - Multiple timeline entries, each with a circular avatar/image, a time period label, and three labeled sub-sections: "What's happening in the skin", "Why skin is vulnerable", "What best supports development" each with bold label and paragraph text
+    
+    Make all text content, images, colors, and layout options customizable via Shopify theme settings. Include settings for: hero image, badge number, heading, subtitle, sidebar text, sidebar author name, right-column heading and body sections, timeline heading, and each timeline entry (image, period label, and the three sub-section texts).
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-content-layout-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  .ai-hero-section-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    min-height: {{ block.settings.hero_height }}px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background-color: {{ block.settings.hero_bg_color }};
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .ai-hero-badge-{{ ai_gen_id }} {
+    width: {{ block.settings.badge_size }}px;
+    height: {{ block.settings.badge_size }}px;
+    border-radius: 50%;
+    background-color: {{ block.settings.badge_bg_color }};
+    color: {{ block.settings.badge_text_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: {{ block.settings.badge_font_size }}px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    border: {{ block.settings.badge_border_width }}px solid {{ block.settings.badge_border_color }};
+  }
+
+  .ai-hero-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.hero_heading_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.hero_text_color }};
+    margin: 0 0 16px;
+    text-align: center;
+    max-width: 800px;
+  }
+
+  .ai-hero-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.hero_subtitle_size }}px;
+    color: {{ block.settings.hero_text_color }};
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .ai-two-column-section-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding }}px 20px;
+    display: grid;
+    grid-template-columns: {{ block.settings.sidebar_width }}% 1fr;
+    gap: {{ block.settings.column_gap }}px;
+  }
+
+  .ai-sidebar-{{ ai_gen_id }} {
+    background-color: {{ block.settings.sidebar_bg_color }};
+    padding: {{ block.settings.sidebar_padding }}px;
+    border-radius: {{ block.settings.sidebar_border_radius }}px;
+    height: fit-content;
+  }
+
+  .ai-sidebar-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.sidebar_text_size }}px;
+    color: {{ block.settings.sidebar_text_color }};
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .ai-sidebar-author-{{ ai_gen_id }} {
+    font-size: {{ block.settings.sidebar_author_size }}px;
+    color: {{ block.settings.sidebar_author_color }};
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .ai-main-content-{{ ai_gen_id }} {
+    background-color: {{ block.settings.content_bg_color }};
+    padding: {{ block.settings.content_padding }}px;
+    border-radius: {{ block.settings.content_border_radius }}px;
+  }
+
+  .ai-content-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.content_heading_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.content_text_color }};
+    margin: 0 0 32px;
+  }
+
+  .ai-content-section-{{ ai_gen_id }} {
+    margin-bottom: 32px;
+  }
+
+  .ai-content-section-{{ ai_gen_id }}:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-content-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.content_subheading_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.content_text_color }};
+    margin: 0 0 12px;
+  }
+
+  .ai-content-body-{{ ai_gen_id }} {
+    font-size: {{ block.settings.content_body_size }}px;
+    color: {{ block.settings.content_text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-timeline-section-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding }}px 20px;
+  }
+
+  .ai-timeline-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.timeline_heading_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.timeline_text_color }};
+    margin: 0 0 40px;
+    text-align: center;
+  }
+
+  .ai-timeline-entries-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.timeline_entry_gap }}px;
+  }
+
+  .ai-timeline-entry-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: {{ block.settings.timeline_avatar_size }}px 1fr;
+    gap: 24px;
+    padding: {{ block.settings.timeline_entry_padding }}px;
+    background-color: {{ block.settings.timeline_entry_bg_color }};
+    border-radius: {{ block.settings.timeline_entry_border_radius }}px;
+    border: {{ block.settings.timeline_entry_border_width }}px solid {{ block.settings.timeline_entry_border_color }};
+  }
+
+  .ai-timeline-avatar-{{ ai_gen_id }} {
+    width: {{ block.settings.timeline_avatar_size }}px;
+    height: {{ block.settings.timeline_avatar_size }}px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .ai-timeline-avatar-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-timeline-avatar-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-timeline-avatar-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .ai-timeline-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-timeline-period-{{ ai_gen_id }} {
+    font-size: {{ block.settings.timeline_period_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.timeline_period_color }};
+    margin-bottom: 8px;
+  }
+
+  .ai-timeline-subsection-{{ ai_gen_id }} {
+    margin-bottom: 16px;
+  }
+
+  .ai-timeline-subsection-{{ ai_gen_id }}:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-timeline-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.timeline_label_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.timeline_text_color }};
+    margin: 0 0 8px;
+  }
+
+  .ai-timeline-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.timeline_body_size }}px;
+    color: {{ block.settings.timeline_text_color }};
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-two-column-section-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-timeline-entry-{{ ai_gen_id }} {
+      grid-template-columns: {{ block.settings.timeline_avatar_size | times: 0.8 }}px 1fr;
+      gap: 16px;
+    }
+
+    .ai-timeline-avatar-{{ ai_gen_id }} {
+      width: {{ block.settings.timeline_avatar_size | times: 0.8 }}px;
+      height: {{ block.settings.timeline_avatar_size | times: 0.8 }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-section-{{ ai_gen_id }} {
+      min-height: {{ block.settings.hero_height | times: 0.7 }}px;
+      padding: 40px 20px;
+    }
+
+    .ai-hero-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.hero_heading_size | times: 0.7 }}px;
+    }
+
+    .ai-hero-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.hero_subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-content-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.content_heading_size | times: 0.8 }}px;
+    }
+
+    .ai-timeline-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.timeline_heading_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<content-layout-{{ ai_gen_id }} class="ai-content-layout-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div
+    class="ai-hero-section-{{ ai_gen_id }}"
+    {% if block.settings.hero_image %}
+      style="background-image: url('{{ block.settings.hero_image | image_url: width: 2000 }}');"
+    {% endif %}
+  >
+    {% if block.settings.show_badge %}
+      <div class="ai-hero-badge-{{ ai_gen_id }}">
+        {{ block.settings.badge_number }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.hero_heading != blank %}
+      <h1 class="ai-hero-heading-{{ ai_gen_id }}">{{ block.settings.hero_heading }}</h1>
+    {% endif %}
+
+    {% if block.settings.hero_subtitle != blank %}
+      <div class="ai-hero-subtitle-{{ ai_gen_id }}">{{ block.settings.hero_subtitle }}</div>
+    {% endif %}
+  </div>
+
+  <div class="ai-two-column-section-{{ ai_gen_id }}">
+    <aside class="ai-sidebar-{{ ai_gen_id }}">
+      {% if block.settings.sidebar_text != blank %}
+        <div class="ai-sidebar-text-{{ ai_gen_id }}">{{ block.settings.sidebar_text }}</div>
+      {% endif %}
+
+      {% if block.settings.sidebar_author != blank %}
+        <div class="ai-sidebar-author-{{ ai_gen_id }}">{{ block.settings.sidebar_author }}</div>
+      {% endif %}
+    </aside>
+
+    <div class="ai-main-content-{{ ai_gen_id }}">
+      {% if block.settings.content_heading != blank %}
+        <h2 class="ai-content-heading-{{ ai_gen_id }}">{{ block.settings.content_heading }}</h2>
+      {% endif %}
+
+      {% for i in (1..5) %}
+        {% liquid
+          assign subheading_key = 'content_subheading_' | append: i
+          assign body_key = 'content_body_' | append: i
+          assign subheading = block.settings[subheading_key]
+          assign body = block.settings[body_key]
+        %}
+
+        {% if subheading != blank or body != blank %}
+          <div class="ai-content-section-{{ ai_gen_id }}">
+            {% if subheading != blank %}
+              <h3 class="ai-content-subheading-{{ ai_gen_id }}">{{ subheading }}</h3>
+            {% endif %}
+
+            {% if body != blank %}
+              <div class="ai-content-body-{{ ai_gen_id }}">{{ body }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="ai-timeline-section-{{ ai_gen_id }}">
+    {% if block.settings.timeline_heading != blank %}
+      <h2 class="ai-timeline-heading-{{ ai_gen_id }}">{{ block.settings.timeline_heading }}</h2>
+    {% endif %}
+
+    <div class="ai-timeline-entries-{{ ai_gen_id }}">
+      {% for i in (1..4) %}
+        {% liquid
+          assign enabled_key = 'timeline_' | append: i | append: '_enabled'
+          assign image_key = 'timeline_' | append: i | append: '_image'
+          assign period_key = 'timeline_' | append: i | append: '_period'
+          assign happening_key = 'timeline_' | append: i | append: '_happening'
+          assign vulnerable_key = 'timeline_' | append: i | append: '_vulnerable'
+          assign supports_key = 'timeline_' | append: i | append: '_supports'
+
+          assign enabled = block.settings[enabled_key]
+          assign image = block.settings[image_key]
+          assign period = block.settings[period_key]
+          assign happening = block.settings[happening_key]
+          assign vulnerable = block.settings[vulnerable_key]
+          assign supports = block.settings[supports_key]
+        %}
+
+        {% if enabled %}
+          <div class="ai-timeline-entry-{{ ai_gen_id }}">
+            <div class="ai-timeline-avatar-{{ ai_gen_id }}">
+              {% if image %}
+                <img
+                  src="{{ image | image_url: width: 200 }}"
+                  alt="{{ period | escape }}"
+                  loading="lazy"
+                  width="200"
+                  height="200"
+                >
+              {% else %}
+                <div class="ai-timeline-avatar-placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="ai-timeline-content-{{ ai_gen_id }}">
+              {% if period != blank %}
+                <div class="ai-timeline-period-{{ ai_gen_id }}">{{ period }}</div>
+              {% endif %}
+
+              {% if happening != blank %}
+                <div class="ai-timeline-subsection-{{ ai_gen_id }}">
+                  <div class="ai-timeline-label-{{ ai_gen_id }}">What's happening in the skin</div>
+                  <div class="ai-timeline-text-{{ ai_gen_id }}">{{ happening }}</div>
+                </div>
+              {% endif %}
+
+              {% if vulnerable != blank %}
+                <div class="ai-timeline-subsection-{{ ai_gen_id }}">
+                  <div class="ai-timeline-label-{{ ai_gen_id }}">Why skin is vulnerable</div>
+                  <div class="ai-timeline-text-{{ ai_gen_id }}">{{ vulnerable }}</div>
+                </div>
+              {% endif %}
+
+              {% if supports != blank %}
+                <div class="ai-timeline-subsection-{{ ai_gen_id }}">
+                  <div class="ai-timeline-label-{{ ai_gen_id }}">What best supports development</div>
+                  <div class="ai-timeline-text-{{ ai_gen_id }}">{{ supports }}</div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</content-layout-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ContentLayout{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.style.display = 'block';
+      }
+    }
+
+    customElements.define('content-layout-{{ ai_gen_id }}', ContentLayout{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Content layout",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "hero_height",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Height",
+      "default": 400
+    },
+    {
+      "type": "color",
+      "id": "hero_bg_color",
+      "label": "Background color",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "hero_text_color",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_number",
+      "label": "Badge number",
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "badge_size",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Badge size",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge font size",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge background",
+      "default": "#334FB4"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "badge_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge border width",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "badge_border_color",
+      "label": "Badge border color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "hero_heading",
+      "label": "Heading",
+      "default": "First three years"
+    },
+    {
+      "type": "range",
+      "id": "hero_heading_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "richtext",
+      "id": "hero_subtitle",
+      "label": "Subtitle",
+      "default": "<p>Understanding the critical early development period</p>"
+    },
+    {
+      "type": "range",
+      "id": "hero_subtitle_size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "sidebar_width",
+      "min": 20,
+      "max": 40,
+      "step": 5,
+      "unit": "%",
+      "label": "Sidebar width",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "richtext",
+      "id": "sidebar_text",
+      "label": "Text",
+      "default": "<p>This is a sidebar text block that provides additional context or information.</p>"
+    },
+    {
+      "type": "range",
+      "id": "sidebar_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "inline_richtext",
+      "id": "sidebar_author",
+      "label": "Author name",
+      "default": "— Author Name"
+    },
+    {
+      "type": "range",
+      "id": "sidebar_author_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Author size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "sidebar_bg_color",
+      "label": "Background color",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "sidebar_text_color",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "sidebar_author_color",
+      "label": "Author color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "sidebar_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "sidebar_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Main content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content_heading",
+      "label": "Heading",
+      "default": "Main Content Heading"
+    },
+    {
+      "type": "range",
+      "id": "content_heading_size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "content_subheading_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_body_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "content_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Content section 1"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content_subheading_1",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "content_body_1",
+      "label": "Body text"
+    },
+    {
+      "type": "header",
+      "content": "Content section 2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content_subheading_2",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "content_body_2",
+      "label": "Body text"
+    },
+    {
+      "type": "header",
+      "content": "Content section 3"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content_subheading_3",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "content_body_3",
+      "label": "Body text"
+    },
+    {
+      "type": "header",
+      "content": "Content section 4"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content_subheading_4",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "content_body_4",
+      "label": "Body text"
+    },
+    {
+      "type": "header",
+      "content": "Content section 5"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content_subheading_5",
+      "label": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "content_body_5",
+      "label": "Body text"
+    },
+    {
+      "type": "header",
+      "content": "Timeline"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "timeline_heading",
+      "label": "Heading",
+      "default": "Microbiome & Skin Development Timeline"
+    },
+    {
+      "type": "range",
+      "id": "timeline_heading_size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "timeline_period_size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Period label size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "timeline_label_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Subsection label size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "timeline_body_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "timeline_text_color",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "timeline_period_color",
+      "label": "Period label color",
+      "default": "#334FB4"
+    },
+    {
+      "type": "range",
+      "id": "timeline_avatar_size",
+      "min": 60,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Avatar size",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "timeline_entry_gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Entry gap",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "timeline_entry_bg_color",
+      "label": "Entry background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "timeline_entry_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Entry padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "timeline_entry_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Entry border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "timeline_entry_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Entry border width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "timeline_entry_border_color",
+      "label": "Entry border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Timeline entry 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "timeline_1_enabled",
+      "label": "Enable entry 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "timeline_1_image",
+      "label": "Avatar image"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "timeline_1_period",
+      "label": "Period label",
+      "default": "0-3 months"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_1_happening",
+      "label": "What's happening",
+      "default": "<p>Skin microbiome begins to develop</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_1_vulnerable",
+      "label": "Why vulnerable",
+      "default": "<p>Skin barrier is still forming</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_1_supports",
+      "label": "What supports",
+      "default": "<p>Gentle, pH-balanced products</p>"
+    },
+    {
+      "type": "header",
+      "content": "Timeline entry 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "timeline_2_enabled",
+      "label": "Enable entry 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "timeline_2_image",
+      "label": "Avatar image"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "timeline_2_period",
+      "label": "Period label",
+      "default": "3-12 months"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_2_happening",
+      "label": "What's happening"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_2_vulnerable",
+      "label": "Why vulnerable"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_2_supports",
+      "label": "What supports"
+    },
+    {
+      "type": "header",
+      "content": "Timeline entry 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "timeline_3_enabled",
+      "label": "Enable entry 3",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "timeline_3_image",
+      "label": "Avatar image"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "timeline_3_period",
+      "label": "Period label",
+      "default": "1-2 years"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_3_happening",
+      "label": "What's happening"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_3_vulnerable",
+      "label": "Why vulnerable"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_3_supports",
+      "label": "What supports"
+    },
+    {
+      "type": "header",
+      "content": "Timeline entry 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "timeline_4_enabled",
+      "label": "Enable entry 4",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "timeline_4_image",
+      "label": "Avatar image"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "timeline_4_period",
+      "label": "Period label",
+      "default": "2-3 years"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_4_happening",
+      "label": "What's happening"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_4_vulnerable",
+      "label": "Why vulnerable"
+    },
+    {
+      "type": "richtext",
+      "id": "timeline_4_supports",
+      "label": "What supports"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content layout"
+    }
+  ]
+}
+{% endschema %}

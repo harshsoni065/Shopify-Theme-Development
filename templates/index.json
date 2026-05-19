@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_banner": {
@@ -14,7 +23,7 @@
           "type": "buttons",
           "settings": {
             "button_label_1": "Shop all",
-            "button_link_1": "shopify:\/\/collections\/all",
+            "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": true,
             "button_label_2": "",
             "button_link_2": "",
@@ -66,10 +75,244 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "guide_article_QdehxD": {
+      "type": "guide-article",
+      "blocks": {
+        "nav_item_CF6TYV": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Introduction",
+            "link": "",
+            "is_active": false
+          }
+        },
+        "nav_item_hRNxX8": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Skin Microbiome",
+            "link": "",
+            "is_active": false
+          }
+        },
+        "nav_item_rnYrcQ": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Skin Barrier",
+            "link": "",
+            "is_active": false
+          }
+        },
+        "nav_item_CFcmbb": {
+          "type": "nav_item",
+          "settings": {
+            "title": "The First Three Years",
+            "link": "",
+            "is_active": true
+          }
+        },
+        "content_section_nyyPKb": {
+          "type": "content_section",
+          "settings": {
+            "heading": "The First Three Years: A Critical Development Window",
+            "content": "<p>The first three years of life represent a critical window for skin development. During this period, the skin barrier, microbiome, and immune system are still maturing.</p><p>Understanding these early stages helps parents and caregivers make informed choices about skincare products and daily routines.</p>"
+          }
+        },
+        "content_section_kejdeX": {
+          "type": "content_section",
+          "settings": {
+            "heading": "Influencing Factors",
+            "content": "<p>Genetics, environment, diet, and skincare practices all play a role in how a child's skin develops during the first three years.</p><p>Gentle, microbiome-friendly products and minimal intervention support healthy barrier function without disrupting natural processes.</p>"
+          }
+        },
+        "content_section_r8TaWR": {
+          "type": "content_section",
+          "settings": {
+            "heading": "Sensitivity Reframing",
+            "content": "<p>What may appear as sensitive skin is often a sign of an immature barrier still learning to regulate itself. Patience and gentle care are key.</p>"
+          }
+        },
+        "timeline_entry_YATqLj": {
+          "type": "timeline_entry",
+          "settings": {
+            "period": "Birth – first weeks",
+            "happening_label": "What's happening in the skin",
+            "happening_text": "Skin barrier is immature; pH is higher than adult skin; microbiome begins colonizing.",
+            "vulnerable_label": "Why skin is vulnerable",
+            "vulnerable_text": "Increased transepidermal water loss; susceptibility to irritation.",
+            "supports_label": "What best supports development",
+            "supports_text": "Skin-to-skin contact, minimal product use, avoid harsh cleansers."
+          }
+        },
+        "timeline_entry_aHNVhh": {
+          "type": "timeline_entry",
+          "settings": {
+            "period": "0–12 months",
+            "happening_label": "What's happening in the skin",
+            "happening_text": "Barrier function improves; microbiome diversifies with environment and feeding.",
+            "vulnerable_label": "Why skin is vulnerable",
+            "vulnerable_text": "Still thinner stratum corneum; reactive to allergens and irritants.",
+            "supports_label": "What best supports development",
+            "supports_text": "Gentle, fragrance-free moisturizers; protect from sun; consistent routine."
+          }
+        },
+        "timeline_entry_dBNJDn": {
+          "type": "timeline_entry",
+          "settings": {
+            "period": "1–3 years",
+            "happening_label": "What's happening in the skin",
+            "happening_text": "Barrier approaches adult-like function; immune tolerance develops.",
+            "vulnerable_label": "Why skin is vulnerable",
+            "vulnerable_text": "Environmental exposures increase; dryness and eczema may emerge.",
+            "supports_label": "What best supports development",
+            "supports_text": "Age-appropriate gentle cleansers; daily moisturization; sun protection."
+          }
+        }
+      },
+      "block_order": [
+        "nav_item_CF6TYV",
+        "nav_item_hRNxX8",
+        "nav_item_rnYrcQ",
+        "nav_item_CFcmbb",
+        "content_section_nyyPKb",
+        "content_section_kejdeX",
+        "content_section_r8TaWR",
+        "timeline_entry_YATqLj",
+        "timeline_entry_aHNVhh",
+        "timeline_entry_dBNJDn"
+      ],
+      "name": "Guide article",
+      "settings": {
+        "overlay_opacity": 35,
+        "badge_number": "4",
+        "hero_title": "First three years",
+        "hero_subtitle": "The first three years of life represent a critical window for skin development.",
+        "hero_min_height": 380,
+        "hero_min_height_mobile": 280,
+        "hero_border_radius": 24,
+        "show_quote": true,
+        "quote_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "quote_author": "Shelly Ann Winokur",
+        "quote_author_title": "PhD, Molecular & Cell Biology\nAuthor of The Symbiont Factor",
+        "nav_aria_label": "Article sections",
+        "show_back_to_top": true,
+        "back_to_top_label": "Back to top",
+        "timeline_title": "Microbiome & Skin Development Timeline",
+        "timeline_border_radius": 16,
+        "sidebar_width": 28,
+        "accent_color": "#5ba3ba",
+        "text_color": "#3d3935",
+        "muted_text_color": "#9a9590",
+        "timeline_bg_color": "#f5f3f0",
+        "content_spacing": 48,
+        "padding_bottom": 64
+      }
+    },
+    "17791813893de4fc37": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1779182301ab1b9904": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_69ecd6b_wDtCnw": {
+          "type": "ai_gen_block_69ecd6b",
+          "settings": {
+            "hero_height": 400,
+            "hero_bg_color": "#f3f3f3",
+            "hero_text_color": "#121212",
+            "show_badge": true,
+            "badge_number": "1",
+            "badge_size": 80,
+            "badge_font_size": 32,
+            "badge_bg_color": "#334FB4",
+            "badge_text_color": "#FFFFFF",
+            "badge_border_width": 0,
+            "badge_border_color": "#FFFFFF",
+            "hero_heading": "First three years",
+            "hero_heading_size": 48,
+            "hero_subtitle": "<p>Understanding the critical early development period</p>",
+            "hero_subtitle_size": 18,
+            "content_max_width": 1200,
+            "section_padding": 60,
+            "sidebar_width": 30,
+            "column_gap": 40,
+            "sidebar_text": "<p>This is a sidebar text block that provides additional context or information.</p>",
+            "sidebar_text_size": 16,
+            "sidebar_author": "— Author Name",
+            "sidebar_author_size": 14,
+            "sidebar_bg_color": "#f3f3f3",
+            "sidebar_text_color": "#121212",
+            "sidebar_author_color": "#121212",
+            "sidebar_padding": 30,
+            "sidebar_border_radius": 0,
+            "content_heading": "Main Content Heading",
+            "content_heading_size": 32,
+            "content_subheading_size": 20,
+            "content_body_size": 16,
+            "content_bg_color": "#FFFFFF",
+            "content_text_color": "#121212",
+            "content_padding": 30,
+            "content_border_radius": 0,
+            "content_subheading_1": "",
+            "content_body_1": "",
+            "content_subheading_2": "",
+            "content_body_2": "",
+            "content_subheading_3": "",
+            "content_body_3": "",
+            "content_subheading_4": "",
+            "content_body_4": "",
+            "content_subheading_5": "",
+            "content_body_5": "",
+            "timeline_heading": "Microbiome & Skin Development Timeline",
+            "timeline_heading_size": 32,
+            "timeline_period_size": 18,
+            "timeline_label_size": 14,
+            "timeline_body_size": 14,
+            "timeline_text_color": "#121212",
+            "timeline_period_color": "#334FB4",
+            "timeline_avatar_size": 80,
+            "timeline_entry_gap": 30,
+            "timeline_entry_bg_color": "#FFFFFF",
+            "timeline_entry_padding": 30,
+            "timeline_entry_border_radius": 0,
+            "timeline_entry_border_width": 1,
+            "timeline_entry_border_color": "#e0e0e0",
+            "timeline_1_enabled": true,
+            "timeline_1_period": "0-3 months",
+            "timeline_1_happening": "<p>Skin microbiome begins to develop</p>",
+            "timeline_1_vulnerable": "<p>Skin barrier is still forming</p>",
+            "timeline_1_supports": "<p>Gentle, pH-balanced products</p>",
+            "timeline_2_enabled": true,
+            "timeline_2_period": "3-12 months",
+            "timeline_2_happening": "",
+            "timeline_2_vulnerable": "",
+            "timeline_2_supports": "",
+            "timeline_3_enabled": true,
+            "timeline_3_period": "1-2 years",
+            "timeline_3_happening": "",
+            "timeline_3_vulnerable": "",
+            "timeline_3_supports": "",
+            "timeline_4_enabled": true,
+            "timeline_4_period": "2-3 years",
+            "timeline_4_happening": "",
+            "timeline_4_vulnerable": "",
+            "timeline_4_supports": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_69ecd6b_wDtCnw"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "image_banner",
-    "featured_collection"
+    "featured_collection",
+    "guide_article_QdehxD",
+    "17791813893de4fc37",
+    "1779182301ab1b9904"
   ]
 }
