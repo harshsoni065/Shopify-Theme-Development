@@ -1,0 +1,31 @@
+name: Prettify JSON Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prettify-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install json-format-cli
+        run: npm install -g json-format-cli
+
+      - name: Prettify JSON files
+        run: |
+          find . -type f -name '*.json' -exec sh -c 'json-format -i "$1" -o "$1.formatted" || echo "Error formatting $1"' _ {} \;
+          find . -type f -name '*.json.formatted' -exec mv {} {} \;
+          git add .
+          git diff --quiet --exit-code || git commit -m "Prettify JSON files"
