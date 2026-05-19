@@ -306,25 +306,6 @@
         "ai_gen_block_69ecd6b_wDtCnw"
       ],
       "settings": {}
-    },
-    "advanced_knowledge_hub_B8PnP7": {
-      "type": "advanced-knowledge-hub",
-      "blocks": {
-        "image_text_kDNxEx": {
-          "type": "image_text",
-          "settings": {
-            "text": "",
-            "reverse": false
-          }
-        }
-      },
-      "block_order": [
-        "image_text_kDNxEx"
-      ],
-      "name": "Advanced Knowledge Hub",
-      "settings": {
-        "bg": "#f4f4f4"
-      }
     }
   },
   "order": [
@@ -332,7 +313,6 @@
     "featured_collection",
     "guide_article_QdehxD",
     "17791813893de4fc37",
-    "1779182301ab1b9904",
-    "advanced_knowledge_hub_B8PnP7"
+    "1779182301ab1b9904"
   ]
 }
