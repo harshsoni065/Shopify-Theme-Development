@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_banner": {
@@ -14,7 +23,7 @@
           "type": "buttons",
           "settings": {
             "button_label_1": "Shop all",
-            "button_link_1": "shopify:\/\/collections\/all",
+            "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": true,
             "button_label_2": "",
             "button_link_2": "",
@@ -66,10 +75,143 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "guide_article_QdehxD": {
+      "type": "guide-article",
+      "blocks": {
+        "nav_item_CF6TYV": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Introduction",
+            "link": "",
+            "is_active": false
+          }
+        },
+        "nav_item_hRNxX8": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Skin Microbiome",
+            "link": "",
+            "is_active": false
+          }
+        },
+        "nav_item_rnYrcQ": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Skin Barrier",
+            "link": "",
+            "is_active": false
+          }
+        },
+        "nav_item_CFcmbb": {
+          "type": "nav_item",
+          "settings": {
+            "title": "The First Three Years",
+            "link": "",
+            "is_active": true
+          }
+        },
+        "content_section_nyyPKb": {
+          "type": "content_section",
+          "settings": {
+            "heading": "The First Three Years: A Critical Development Window",
+            "content": "<p>The first three years of life represent a critical window for skin development. During this period, the skin barrier, microbiome, and immune system are still maturing.</p><p>Understanding these early stages helps parents and caregivers make informed choices about skincare products and daily routines.</p>"
+          }
+        },
+        "content_section_kejdeX": {
+          "type": "content_section",
+          "settings": {
+            "heading": "Influencing Factors",
+            "content": "<p>Genetics, environment, diet, and skincare practices all play a role in how a child's skin develops during the first three years.</p><p>Gentle, microbiome-friendly products and minimal intervention support healthy barrier function without disrupting natural processes.</p>"
+          }
+        },
+        "content_section_r8TaWR": {
+          "type": "content_section",
+          "settings": {
+            "heading": "Sensitivity Reframing",
+            "content": "<p>What may appear as sensitive skin is often a sign of an immature barrier still learning to regulate itself. Patience and gentle care are key.</p>"
+          }
+        },
+        "timeline_entry_YATqLj": {
+          "type": "timeline_entry",
+          "settings": {
+            "period": "Birth – first weeks",
+            "happening_label": "What's happening in the skin",
+            "happening_text": "Skin barrier is immature; pH is higher than adult skin; microbiome begins colonizing.",
+            "vulnerable_label": "Why skin is vulnerable",
+            "vulnerable_text": "Increased transepidermal water loss; susceptibility to irritation.",
+            "supports_label": "What best supports development",
+            "supports_text": "Skin-to-skin contact, minimal product use, avoid harsh cleansers."
+          }
+        },
+        "timeline_entry_aHNVhh": {
+          "type": "timeline_entry",
+          "settings": {
+            "period": "0–12 months",
+            "happening_label": "What's happening in the skin",
+            "happening_text": "Barrier function improves; microbiome diversifies with environment and feeding.",
+            "vulnerable_label": "Why skin is vulnerable",
+            "vulnerable_text": "Still thinner stratum corneum; reactive to allergens and irritants.",
+            "supports_label": "What best supports development",
+            "supports_text": "Gentle, fragrance-free moisturizers; protect from sun; consistent routine."
+          }
+        },
+        "timeline_entry_dBNJDn": {
+          "type": "timeline_entry",
+          "settings": {
+            "period": "1–3 years",
+            "happening_label": "What's happening in the skin",
+            "happening_text": "Barrier approaches adult-like function; immune tolerance develops.",
+            "vulnerable_label": "Why skin is vulnerable",
+            "vulnerable_text": "Environmental exposures increase; dryness and eczema may emerge.",
+            "supports_label": "What best supports development",
+            "supports_text": "Age-appropriate gentle cleansers; daily moisturization; sun protection."
+          }
+        }
+      },
+      "block_order": [
+        "nav_item_CF6TYV",
+        "nav_item_hRNxX8",
+        "nav_item_rnYrcQ",
+        "nav_item_CFcmbb",
+        "content_section_nyyPKb",
+        "content_section_kejdeX",
+        "content_section_r8TaWR",
+        "timeline_entry_YATqLj",
+        "timeline_entry_aHNVhh",
+        "timeline_entry_dBNJDn"
+      ],
+      "name": "Guide article",
+      "settings": {
+        "overlay_opacity": 35,
+        "badge_number": "4",
+        "hero_title": "First three years",
+        "hero_subtitle": "The first three years of life represent a critical window for skin development.",
+        "hero_min_height": 380,
+        "hero_min_height_mobile": 280,
+        "hero_border_radius": 24,
+        "show_quote": true,
+        "quote_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "quote_author": "Shelly Ann Winokur",
+        "quote_author_title": "PhD, Molecular & Cell Biology\nAuthor of The Symbiont Factor",
+        "nav_aria_label": "Article sections",
+        "show_back_to_top": true,
+        "back_to_top_label": "Back to top",
+        "timeline_title": "Microbiome & Skin Development Timeline",
+        "timeline_border_radius": 16,
+        "sidebar_width": 28,
+        "accent_color": "#5ba3ba",
+        "text_color": "#3d3935",
+        "muted_text_color": "#9a9590",
+        "timeline_bg_color": "#f5f3f0",
+        "content_spacing": 48,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
     "image_banner",
-    "featured_collection"
+    "featured_collection",
+    "guide_article_QdehxD"
   ]
 }
